@@ -8,6 +8,7 @@ TopologyTestDriver, InputTopics and OutputTopics to facilitate quick generation 
 - [X] Generate a Topology using TopologyTestDriver via the @KafkaTest annotation
 - [X] Intuit the type of Serde which must be used (Primitive Serdes or JsonSerde for complex types)
 - [X] Use the ContextConfigurationCustomizer to add topics, input and output to the application context
+- [ ] Try replace ContextCustomizer for TestExecutionListener
 - [ ] Write multiple test cases to see how the framework performs under repeated use
 - [ ] Clean up TODOs in the code
 - [ ] Provide a means for the user to add their own Serializers and Deserializers to the framework
