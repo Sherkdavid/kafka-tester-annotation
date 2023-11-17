@@ -60,6 +60,7 @@ public class KafkaTestContextCustomizer implements ContextCustomizer
 {
     private final KafkaTest kafkaTest;
     private TopologyTestDriver topologyTestDriver;
+    private static final String CUSTOMIZER_PREFIX = "KafkaTestContextCustomizer";
 
     public KafkaTestContextCustomizer(final KafkaTest kafkaTest)
     {
@@ -87,9 +88,9 @@ public class KafkaTestContextCustomizer implements ContextCustomizer
                 getSerializer(topic.keyType()),
                 getSerializer(topic.valueType())))
             .forEach(testInputTopic -> {
-                /*TODO not toString*/
-                context.getBeanFactory().initializeBean(testInputTopic, testInputTopic.toString());
-                context.getBeanFactory().registerSingleton(testInputTopic.toString(), testInputTopic);
+                final String beanName = CUSTOMIZER_PREFIX + "_" + testInputTopic;
+                context.getBeanFactory().initializeBean(testInputTopic, beanName);
+                context.getBeanFactory().registerSingleton(beanName, testInputTopic);
             });
 
         Arrays.stream(kafkaTest.outputTopics())
@@ -97,9 +98,9 @@ public class KafkaTestContextCustomizer implements ContextCustomizer
                 getDeserializer(topic.keyType()),
                 getDeserializer(topic.valueType())))
             .forEach(testOutputTopic -> {
-                /*TODO not toString*/
-                context.getBeanFactory().initializeBean(testOutputTopic, testOutputTopic.toString());
-                context.getBeanFactory().registerSingleton(testOutputTopic.toString(), testOutputTopic);
+                final String beanName = CUSTOMIZER_PREFIX + "_" + testOutputTopic;
+                context.getBeanFactory().initializeBean(testOutputTopic, beanName);
+                context.getBeanFactory().registerSingleton(beanName, testOutputTopic);
             });
     }
 }

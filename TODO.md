@@ -10,6 +10,6 @@ TopologyTestDriver, InputTopics and OutputTopics to facilitate quick generation 
 - [X] Use the ContextConfigurationCustomizer to add topics, input and output to the application context
 - [X] Implement listener for closeable TopologyTestDriver
 - [X] Write multiple test cases to see how the framework performs under repeated use
-- [ ] Clean up TODOs in the code
+- [X] Clean up TODOs in the code
 - [ ] Provide a means for the user to add their own Serializers and Deserializers to the framework
 - [ ] Prepare library for release on github
