@@ -41,6 +41,7 @@ import org.apache.kafka.common.serialization.VoidSerializer;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.TopologyTestDriver;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -58,6 +59,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaTestContextCustomizer implements ContextCustomizer
 {
     private final KafkaTest kafkaTest;
+    private TopologyTestDriver topologyTestDriver;
 
     public KafkaTestContextCustomizer(final KafkaTest kafkaTest)
     {
@@ -74,12 +76,12 @@ public class KafkaTestContextCustomizer implements ContextCustomizer
         final Optional<Method> builderMethodOptional = Arrays.stream(ReflectionUtils.getDeclaredMethods(clazz))
             .filter(method -> method.getParameters().length == 1 && method.getParameters()[0].getType().isAssignableFrom(StreamsBuilder.class))
             .findFirst();
-        Method builderMethod = builderMethodOptional.orElseThrow(
+        final Method builderMethod = builderMethodOptional.orElseThrow(
             () -> new UnsupportedOperationException(String.format("%s must provide one method accepting a StreamsBuilder parameter", clazz.getName()))
         );
         ReflectionUtils.invokeMethod(builderMethod, streamsBuilderClass, streamsBuilder);
-        @SuppressWarnings("java:S2095") // TODO implement close for Closeable in another intercept
-        TopologyTestDriver topologyTestDriver = new TopologyTestDriver(streamsBuilder.build());
+        topologyTestDriver = new TopologyTestDriver(streamsBuilder.build());
+        context.getBeanFactory().registerSingleton("topologyTestDriver", topologyTestDriver);
         Arrays.stream(kafkaTest.inputTopics())
             .map(topic -> topologyTestDriver.createInputTopic(topic.topicName(),
                 getSerializer(topic.keyType()),
