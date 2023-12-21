@@ -1,7 +1,3 @@
-The outcome of this labday project is to create unit test infrastructure for Kafka Streams projects
-via annotation processing. Using ContextCustomizers and some java reflection, we will create the
-TopologyTestDriver, InputTopics and OutputTopics to facilitate quick generation of KafkaStreams unit tests
-
 ### TODO
 
 - [X] Create a simple demo Kafka Streams application
@@ -12,4 +8,12 @@ TopologyTestDriver, InputTopics and OutputTopics to facilitate quick generation 
 - [X] Write multiple test cases to see how the framework performs under repeated use
 - [X] Clean up TODOs in the code
 - [ ] Provide a means for the user to add their own Serializers and Deserializers to the framework
-- [ ] Prepare library for release on github
+- [ ] Separate into;
+    - [ ] kafka-test-annotation-spring
+    - [ ] kafka-test-annotation-spring-boot
+    - [ ] kafka-test-annotation-spring-boot-starter
+- [ ] Prepare library for release
+
+## Long-term goals
+
+- Provide a means of creating test objects for external kafka cluster, integration test context
